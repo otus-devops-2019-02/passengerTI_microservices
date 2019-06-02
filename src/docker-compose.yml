@@ -11,9 +11,9 @@ services:
           - comment_db
   ui:
     build: ./ui
-    image: ${USERNAME}/ui:${SERVVERS}
+    image: ${USERNAME}/ui:${SRVVERS}
     ports:
-      - ${SERVPORT}:${SERVPORT}/tcp
+      - ${SRVPORT}:${SRVPORT}/tcp
     networks:
       front_net:
         aliases:

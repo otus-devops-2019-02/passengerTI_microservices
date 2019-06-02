@@ -11,9 +11,9 @@ services:
           - comment_db
   ui:
     build: ./ui
-    image: ${USERNAME}/ui:${SERVVERS}
+    image: ${USERNAME}/ui:${SRVVERS}
     ports:
-      - ${SERVPORT}:${SERVPORT}/tcp
+      - ${SRVPORT}:${SRVPORT}/tcp
     command: ["puma", "--debug", "-w 2"]
     volumes:
       - ./ui:/app
@@ -23,7 +23,7 @@ services:
           - ui
   post:
     build: ./post-py
-    image: ${USERNAME}/post:${SERVVERS}
+    image: ${USERNAME}/post:${SRVVERS}
     volumes:
       - ./post-py:/app
     networks:
@@ -35,7 +35,7 @@ services:
           - post
   comment:
     build: ./comment
-    image: ${USERNAME}/comment:${SERVVERS}
+    image: ${USERNAME}/comment:${SRVVERS}
     volumes:
       - ./comment:/app
     networks:
