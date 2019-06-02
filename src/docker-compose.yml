@@ -25,7 +25,7 @@ services:
       back_net:
         aliases:
           - comment
-      front_net
+      front_net:
         aliases:
           - comment
   comment:
