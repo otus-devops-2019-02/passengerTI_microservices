@@ -15,9 +15,9 @@ services:
           - mongodb
 
   ui:
-    image: ${USER_NAME}/ui:${SERVVERS}
+    image: ${USER_NAME}/ui:${SRVVERS}
     ports:
-      - ${SERVPORT}:${SERVPORT}/tcp
+      - ${SRVPORT}:${SRVPORT}/tcp
     environment:
       - POST_SERVICE_HOST=post
       - POST_SERVICE_PORT=5000
@@ -35,7 +35,7 @@ services:
           - ui
 
   post:
-    image: ${USER_NAME}/post:${SERVVERS}
+    image: ${USER_NAME}/post:${SRVVERS}
     environment:
       - POST_DATABASE_HOST=post_db
       - POST_DATABASE=posts
@@ -58,7 +58,7 @@ services:
           - post
 
   comment:
-    image: ${USER_NAME}/comment:${SERVVERS}
+    image: ${USER_NAME}/comment:${SRVVERS}
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
