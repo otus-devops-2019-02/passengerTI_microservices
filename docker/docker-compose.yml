@@ -1,5 +1,6 @@
 version: '3.3'
 services:
+
   post_db:
     image: mongo:3.2
     volumes:
@@ -9,16 +10,20 @@ services:
         aliases:
           - post_db
           - comment_db
+      front_net:
+        aliases:
+          - mongodb
+
   ui:
-    image: ${USERNAME}/ui:${SRVVERS}
+    image: ${USER_NAME}/ui:${SERVVERS}
     ports:
-      - ${SRVPORT}:${SRVPORT}/tcp
+      - ${SERVPORT}:${SERVPORT}/tcp
     environment:
       - POST_SERVICE_HOST=post
       - POST_SERVICE_PORT=5000
       - COMMENT_SERVICE_HOST=comment
       - COMMENT_SERVICE_PORT=9292
-      - ZIPKIN_ENABLED=${ZIPKIN_ENABLES}
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     logging:
       driver: "fluentd"
       options:
@@ -28,8 +33,9 @@ services:
       front_net:
         aliases:
           - ui
+
   post:
-    image: ${USERNAME}/post:${SRVVERS}
+    image: ${USER_NAME}/post:${SERVVERS}
     environment:
       - POST_DATABASE_HOST=post_db
       - POST_DATABASE=posts
@@ -50,8 +56,9 @@ services:
       front_net:
         aliases:
           - post
+
   comment:
-    image: ${USERNAME}/comment:${SRVVERS}
+    image: ${USER_NAME}/comment:${SERVVERS}
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
@@ -61,22 +68,10 @@ services:
       front_net:
         aliases:
           - comment
-  mongodb-exporter:
-    image: ${USERNAME}/mongodb_exporter:latest
-    user: root
-    ports:
-      - '9216:9216'
-    command:
-      - '--mongodb.uri=mongodb:27017'
-    networks:
-      front_net:
-        aliases:
-          - monfodb-exporter
+
 volumes:
   post_db:
-  prometheus_data:
 
 networks:
   back_net:
   front_net:
-
