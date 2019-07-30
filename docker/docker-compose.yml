@@ -13,21 +13,47 @@ services:
     image: ${USERNAME}/ui:${SRVVERS}
     ports:
       - ${SRVPORT}:${SRVPORT}/tcp
+    environment:
+      - POST_SERVICE_HOST=post
+      - POST_SERVICE_PORT=5000
+      - COMMENT_SERVICE_HOST=comment
+      - COMMENT_SERVICE_PORT=9292
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLES}
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.ui
     networks:
       front_net:
         aliases:
           - ui
   post:
     image: ${USERNAME}/post:${SRVVERS}
+    environment:
+      - POST_DATABASE_HOST=post_db
+      - POST_DATABASE=posts
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
+    depends_on:
+      - post_db
+    ports:
+      - "5000:5000"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.post
     networks:
       back_net:
         aliases:
-          - comment
+          - post
       front_net:
         aliases:
-          - comment
+          - post
   comment:
     image: ${USERNAME}/comment:${SRVVERS}
+    environment:
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
       back_net:
         aliases:
