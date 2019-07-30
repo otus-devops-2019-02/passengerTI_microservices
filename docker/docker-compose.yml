@@ -61,7 +61,7 @@ services:
           - post
 
   comment:
-    image: ${USERNAME}/comment:logging # 1.0
+    image: ${USERNAME}/comment:${SRVVERS} # 1.0
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
