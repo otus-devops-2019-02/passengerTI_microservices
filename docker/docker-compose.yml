@@ -62,6 +62,8 @@ services:
 
   comment:
     image: ${USERNAME}/comment:logging
+    ports:
+      - "9292:9292"
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
