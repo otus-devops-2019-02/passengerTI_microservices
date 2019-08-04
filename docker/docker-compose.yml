@@ -21,10 +21,7 @@ services:
       - COMMENT_SERVICE_PORT=9292
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     ports:
-      - target: 9292 # the port inside the container
-        published: ${SRVPORT} # the publicly exposed port
-        protocol: tcp # the port protocol (tcp or udp)
-        mode: host # host for publishing a host port on each node, or ingress for a swarm mode port to be load balanced.
+      - "9292:9292"
     depends_on:
       - post
     networks:
