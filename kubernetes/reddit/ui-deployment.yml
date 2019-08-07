@@ -20,5 +20,5 @@ spec:
         component: ui
     spec:
       containers:
-      - image: mad72/ui:latest
+      - image: passenger67/ui:latest
         name: ui
