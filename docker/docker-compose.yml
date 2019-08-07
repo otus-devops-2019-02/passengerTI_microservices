@@ -59,6 +59,8 @@ services:
 
   comment:
     image: ${USERNAME}/comment:${SRVVERS}
+    ports:
+      - "9393:9292"
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
