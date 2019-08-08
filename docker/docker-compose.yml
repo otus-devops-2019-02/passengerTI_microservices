@@ -18,13 +18,11 @@ services:
       - COMMENT_SERVICE_PORT=9292
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     ports:
-      - "9292:9292"
+      - "9000:9292"
     depends_on:
       - post
     networks:
       reddit:
-        aliases:
-          - ui
     logging:
       driver: "fluentd"
       options:
@@ -52,9 +50,7 @@ services:
           - post
 
   comment:
-    image: ${USER_NAME}/comment:${SRVVERS}
-    ports:
-      - "9393:9292"
+    image: ${USER_NAME}/comment:${SRVVERS} # 1.0
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
