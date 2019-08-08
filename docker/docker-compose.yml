@@ -5,10 +5,7 @@ services:
     volumes:
       - post_db:/data/db
     networks:
-      front_net:
-        aliases:
-          - mongodb
-      back_net:
+      reddit:
         aliases:
           - post_db
           - comment_db
@@ -25,7 +22,7 @@ services:
     depends_on:
       - post
     networks:
-      front_net:
+      reddit:
         aliases:
           - ui
     logging:
@@ -50,10 +47,7 @@ services:
         fluentd-address: localhost:24224
         tag: service.post
     networks:
-      front_net:
-        aliases:
-          - post
-      back_net:
+      reddit:
         aliases:
           - post
 
@@ -64,10 +58,7 @@ services:
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
-      front_net:
-        aliases:
-          - comment
-      back_net:
+      reddit:
         aliases:
           - comment
 
@@ -75,6 +66,6 @@ volumes:
   post_db:
 
 networks:
-  front_net:
-  back_net:
+  reddit:
+
 
