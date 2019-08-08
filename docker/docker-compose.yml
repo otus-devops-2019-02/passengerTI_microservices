@@ -23,8 +23,6 @@ services:
       - post
     networks:
       reddit:
-        aliases:
-          - comment
     logging:
       driver: "fluentd"
       options:
@@ -57,8 +55,8 @@ services:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
       reddit:
-#        aliases:
-#          - comment
+        aliases:
+          - comment
 
 volumes:
   post_db:
