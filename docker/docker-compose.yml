@@ -5,31 +5,32 @@ services:
     volumes:
       - post_db:/data/db
     networks:
-      back_net:
+      reddit:
         aliases:
           - post_db
           - comment_db
   ui:
-    image: ${USERNAME}/ui:${SRVVERS}
-    ports:
-      - ${SRVPORT}:${SRVPORT}/tcp
+    image: ${USER_NAME}/ui:${SRVVERS} # 1.0
     environment:
       - POST_SERVICE_HOST=post
       - POST_SERVICE_PORT=5000
       - COMMENT_SERVICE_HOST=comment
       - COMMENT_SERVICE_PORT=9292
-      - ZIPKIN_ENABLED=${ZIPKIN_ENABLES}
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
+    ports:
+      - "9292:9292"
+    depends_on:
+      - post
+    networks:
+      reddit:
     logging:
       driver: "fluentd"
       options:
         fluentd-address: localhost:24224
         tag: service.ui
-    networks:
-      front_net:
-        aliases:
-          - ui
+
   post:
-    image: ${USERNAME}/post:${SRVVERS}
+    image: ${USER_NAME}/post:${SRVVERS} # 1.0
     environment:
       - POST_DATABASE_HOST=post_db
       - POST_DATABASE=posts
@@ -44,39 +45,23 @@ services:
         fluentd-address: localhost:24224
         tag: service.post
     networks:
-      back_net:
+      reddit:
         aliases:
           - post
-      front_net:
-        aliases:
-          - post
+
   comment:
-    image: ${USERNAME}/comment:${SRVVERS}
+    image: ${USER_NAME}/comment:${SRVVERS} # 1.0
     environment:
       - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
     networks:
-      back_net:
+      reddit:
         aliases:
           - comment
-      front_net:
-        aliases:
-          - comment
-  mongodb-exporter:
-    image: ${USERNAME}/mongodb_exporter:latest
-    user: root
-    ports:
-      - '9216:9216'
-    command:
-      - '--mongodb.uri=mongodb:27017'
-    networks:
-      front_net:
-        aliases:
-          - monfodb-exporter
+
 volumes:
   post_db:
-  prometheus_data:
 
 networks:
-  back_net:
-  front_net:
+  reddit:
+
 

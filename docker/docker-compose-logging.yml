@@ -1,10 +1,12 @@
-version: '3'
+version: '3.3'
 services:
   fluentd:
-    image: ${USERNAME}/fluentd
+    image: ${USER_NAME}/fluentd
     ports:
       - "24224:24224"
       - "24224:24224/udp"
+    networks:
+      - reddit
 
   elasticsearch:
     image: elasticsearch:5.6
@@ -12,21 +14,24 @@ services:
       - "9200"
     ports:
       - "9200:9200"
+    networks:
+      - reddit
 
   kibana:
     image: kibana:5.6
     ports:
       - "5601:5601"
+    networks:
+      - reddit
 
   zipkin:
     image: openzipkin/zipkin
     ports:
       - "9411:9411"
     networks:
-      - front_net
-      - back_net
+      - reddit
 
 networks:
-  back_net:
-  front_net:
+  reddit:
+
 
