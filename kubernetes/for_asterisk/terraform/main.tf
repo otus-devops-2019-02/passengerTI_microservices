@@ -9,7 +9,7 @@ provider "google" {
 }
 
 resource "google_container_cluster" "primary" {
-  name     = "k8s-cluster-for-asterisk"
+  name     = "k8s-1"
   zone     = "${var.zone}"
   remove_default_node_pool = true
   initial_node_count = 1
@@ -22,7 +22,7 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
-  name       = "k8s-cluster-for-asterisk-node-pool"
+  name       = "k8s-1-node"
   zone       = "${var.zone}"
   cluster    = "${google_container_cluster.primary.name}"
   node_count = 2
@@ -31,9 +31,9 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     preemptible  = true
     machine_type = "${var.machine_type}"
 
-    metadata {
-      disable-legacy-endpoints = "true"
-    }
+    // metadata {
+    //   disable-legacy-endpoints = "true"
+    // }
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
